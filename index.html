@@ -13,6 +13,7 @@
     --bad-bg:#3b1220; --bad:#ff8fa3; --bad-line:#6b2238;
     --info-bg:#10263f; --info:#7cc0ff; --info-line:#1f4a78;
     --good-bg:#0f2e22; --good:#5fd39a; --good-line:#1d5a40;
+    --sq: min(54px, calc((100vw - 56px) / 8));
     color-scheme: dark;
   }
 
@@ -42,16 +43,30 @@
     margin-bottom: 4px;
   }
 
+  .site-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--strong);
+    margin-bottom: 8px;
+  }
+
   .subtitle {
     font-size: 11px;
     color: var(--muted);
-    margin-bottom: 1.5rem;
     letter-spacing: 0.1em;
   }
 
   .score-row {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 12px 20px;
     margin-bottom: 1.5rem;
   }
 
@@ -85,7 +100,7 @@
   }
 
   .coord-rank-col span {
-    height: 54px;
+    height: var(--sq);
     display: flex;
     align-items: center;
     font-size: 11px;
@@ -101,9 +116,11 @@
 
   .rank { display: flex; }
 
+  .board { touch-action: none; }
+
   .sq {
-    width: 54px;
-    height: 54px;
+    width: var(--sq);
+    height: var(--sq);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -113,7 +130,32 @@
     position: relative;
   }
 
-  .sq .piece { width: 46px; height: 46px; display: block; pointer-events: none; }
+  .sq .piece { width: 85%; height: 85%; display: block; pointer-events: none; }
+  .sq.movable { cursor: grab; }
+  .sq.from .piece { opacity: 0.35; }
+  .sq.sel  { box-shadow: inset 0 0 0 3px var(--accent); }
+  .sq.last::before { content: ""; position: absolute; inset: 0; background: var(--accent); opacity: 0.28; }
+  .sq.target::after {
+    content: "";
+    position: absolute;
+    width: 28%;
+    height: 28%;
+    border-radius: 50%;
+    background: rgba(20, 20, 20, 0.28);
+    pointer-events: none;
+  }
+  .sq.target.capture::after {
+    width: 88%;
+    height: 88%;
+    background: transparent;
+    border: 4px solid rgba(20, 20, 20, 0.28);
+  }
+  .drag-ghost {
+    position: fixed;
+    z-index: 200;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
 
   .sq.light { background: var(--sq-light); }
   .sq.dark  { background: var(--sq-dark); }
@@ -124,7 +166,7 @@
   }
 
   .coord-file span {
-    width: 54px;
+    width: var(--sq);
     text-align: center;
     font-size: 11px;
     color: var(--dim);
@@ -148,6 +190,8 @@
     font-weight: 600;
     color: var(--strong);
   }
+
+  .input-row[hidden] { display: none; }
 
   .input-row {
     display: flex;
@@ -289,6 +333,14 @@
   }
 
   .notation-guide span { color: var(--muted); }
+
+  .site-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--dim);
+  }
 
   /* ---------- AI Coach chat widget ---------- */
   #chat-launcher {
@@ -435,6 +487,7 @@
     cursor: pointer;
     margin-left: auto;
     align-self: center;
+    white-space: nowrap;
   }
 
   .mood-chip:hover { color: var(--strong); border-color: var(--border-hover); }
@@ -613,8 +666,11 @@
   .review-extra[hidden] { display: none; }
 </style>
 <div id="app">
-  <h1>ChessMD</h1>
-  <div class="subtitle">A healthy mind makes strong moves.</div>
+  <header class="site-header">
+    <h1>ChessMD</h1>
+    <p class="tagline">A healthy mind makes strong moves.</p>
+    <div class="subtitle">DRAG OR TAP A PIECE TO MAKE YOUR MOVE</div>
+  </header>
 
   <div class="score-row">
     <div class="sc"><strong id="sc-solved">0</strong>solved</div>
@@ -624,7 +680,7 @@
   </div>
 
   <div class="packs" id="packs" role="group" aria-label="Color theme">
-    <span class="packs-label">THEME: Pick your favorite!</span>
+    <span class="packs-label">THEME</span>
   </div>
 
   <div class="board-wrap">
@@ -641,13 +697,14 @@
     <div class="info-col">
       <div class="turn-label" id="turn-label"><strong id="puzzle-title">Checkmate in 1</strong> · <span id="puzzle-q">White to move.</span></div>
 
-      <div class="input-row">
+      <!-- Typing box: only shown if the chess rules library can't load, so the puzzle still works -->
+      <div class="input-row" hidden>
         <label for="answer" class="sr">Your move</label>
         <input id="answer" placeholder="e.g. Qxf7#, Rd8+, e8=Q" autocomplete="off" spellcheck="false"/>
         <button id="submit" onclick="checkAnswer()">Check</button>
       </div>
 
-      <div class="feedback empty" id="feedback">Enter your move above</div>
+      <div class="feedback empty" id="feedback">Move a piece on the board</div>
       <div class="hint-note" id="hint-note"></div>
 
       <div class="btn-row">
@@ -679,11 +736,14 @@
   <hr class="divider"/>
 
   <div class="notation-guide">
-   <h3>Algebraic Notation Guide!</h3>
     <span>Pieces:</span> K=King · Q=Queen · R=Rook · B=Bishop · N=Knight · (pawns = just the square)<br/>
     <span>Symbols:</span> x=capture · +=check · #=checkmate · e8=Q promotion<br/>
     <span>Examples:</span> e4 · Nf3 · Bxc6 · O-O (castle) · e8=Q
   </div>
+
+  <footer class="site-footer">
+    <p>© <span id="year">2026</span> ChessMD. All rights reserved.</p>
+  </footer>
 </div>
 
 <!-- ---------- Mood check-in ---------- -->
@@ -713,6 +773,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.js"></script>
 <script>
 const PIECES = {
   K:'♔', Q:'♕', R:'♖', B:'♗', N:'♘', P:'♙',
@@ -992,6 +1053,7 @@ const PUZZLES = [
   }
 ];
 
+// Piece images, built into the page so no separate folder is needed
 const PIECE_IMG = {
   "K": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiNmN2Y0ZWMiIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8cGF0aCBkPSJNNDYgNiBMNTQgNiBMNTQgMTIgTDYwIDEyIEw2MCAxOSBMNTQgMTkgTDU0IDI2IEw0NiAyNiBMNDYgMTkgTDQwIDE5IEw0MCAxMiBMNDYgMTIgWiIvPgogIDxwYXRoIGQ9Ik01MCAyNiBDNTggMjYgNjIgMzAgNjIgMzYgTDc2IDMyIEM4MiA0MCA3NiA1NCA3MCA1OCBMMzAgNTggQzI0IDU0IDE4IDQwIDI0IDMyIEwzOCAzNiBDMzggMzAgNDIgMjYgNTAgMjYgWiIvPgogIDxyZWN0IHg9IjI5LjAiIHk9IjU4IiB3aWR0aD0iNDIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNMzMgNjQgTDY3IDY0IEw3MCA4MCBMMzAgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iIzFiMWIxYiI+CiAgPGxpbmUgeDE9IjMyIiB5MT0iNzAiIHgyPSI2OCIgeTI9IjcwIi8+PGxpbmUgeDE9IjUwIiB5MT0iMzAiIHgyPSI1MCIgeTI9IjU2Ii8+CjwvZz4KPC9zdmc+Cg==",
   "Q": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiNmN2Y0ZWMiIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIwIiByPSI1Ii8+PGNpcmNsZSBjeD0iMzYiIGN5PSIxNCIgcj0iNSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMTEiIHI9IjUiLz48Y2lyY2xlIGN4PSI2NCIgY3k9IjE0IiByPSI1Ii8+PGNpcmNsZSBjeD0iNzgiIGN5PSIyMCIgcj0iNSIvPgogIDxwYXRoIGQ9Ik0yMiAyNCBMMzIgNDYgTDM2IDE5IEw0NCA0NCBMNTAgMTYgTDU2IDQ0IEw2NCAxOSBMNjggNDYgTDc4IDI0IEw3MiA1OCBMMjggNTggWiIvPgogIDxyZWN0IHg9IjI5LjAiIHk9IjU4IiB3aWR0aD0iNDIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNMzMgNjQgTDY3IDY0IEw3MCA4MCBMMzAgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iIzFiMWIxYiI+CiAgPGxpbmUgeDE9IjMyIiB5MT0iNzAiIHgyPSI2OCIgeTI9IjcwIi8+CjwvZz4KPC9zdmc+Cg==",
@@ -1027,6 +1089,12 @@ function parseFen(fen) {
   });
 }
 
+let game = null;          // chess.js position for the current puzzle (null if the library didn't load)
+let boardLocked = false;  // true after the puzzle is solved, or while a wrong move snaps back
+let selected = null;      // square the player tapped
+let lastMove = null;      // {from, to} to highlight
+let drag = null;
+
 function renderBoard(fen) {
   const grid = parseFen(fen);
   const boardEl = document.getElementById('board');
@@ -1037,12 +1105,20 @@ function renderBoard(fen) {
   const fileC = document.getElementById('file-coords');
   fileC.innerHTML = '';
 
+  const targets = {};
+  if (game && selected) {
+    for (const m of game.moves({ square: selected, verbose: true })) targets[m.to] = !!m.captured;
+  }
+  const toMove = fen.split(' ')[1] || 'w';
+
   for (let r = 0; r < 8; r++) {
     const rankDiv = document.createElement('div');
     rankDiv.className = 'rank';
     for (let c = 0; c < 8; c++) {
+      const name = 'abcdefgh'[c] + (8 - r);
       const sq = document.createElement('div');
       sq.className = 'sq ' + ((r + c) % 2 === 0 ? 'light' : 'dark');
+      sq.dataset.sq = name;
       const pc = grid[r][c];
       if (pc && PIECES[pc]) {
         const img = document.createElement('img');
@@ -1050,7 +1126,12 @@ function renderBoard(fen) {
         img.alt = PIECE_NAMES[pc];
         img.className = 'piece';
         sq.appendChild(img);
+        const isMine = (pc === pc.toUpperCase()) === (toMove === 'w');
+        if (game && isMine && !boardLocked) sq.classList.add('movable');
       }
+      if (name === selected) sq.classList.add('sel');
+      if (lastMove && (name === lastMove.from || name === lastMove.to)) sq.classList.add('last');
+      if (name in targets) sq.classList.add('target', ...(targets[name] ? ['capture'] : []));
       rankDiv.appendChild(sq);
     }
     boardEl.appendChild(rankDiv);
@@ -1067,6 +1148,114 @@ function renderBoard(fen) {
   }
 }
 
+function redraw() {
+  renderBoard(game ? game.fen() : PUZZLES[cur].fen);
+}
+
+/* ---------- Moving pieces (drag, or tap then tap) ---------- */
+function canMoveFrom(square) {
+  if (!game || boardLocked) return false;
+  const piece = game.get(square);
+  return !!piece && piece.color === game.turn();
+}
+
+function selectSquare(square) {
+  selected = square;
+  redraw();
+}
+
+function playBoardMove(from, to) {
+  selected = null;
+  const mv = game.move({ from, to, promotion: 'q' }); // pawns promote to a queen
+  if (!mv) { redraw(); return; }                       // not a legal move: snap back
+  lastMove = { from, to };
+  boardLocked = true;
+  redraw();
+
+  document.getElementById('answer').value = mv.san;
+  const correct = checkAnswer(mv.san);
+  if (!correct) {
+    // show the move for a moment, then put the piece back
+    setTimeout(() => {
+      game.undo();
+      lastMove = null;
+      boardLocked = false;
+      redraw();
+    }, 900);
+  }
+}
+
+// Show a typed or revealed move on the board
+function showMoveOnBoard(san) {
+  if (!game) return;
+  const mv = game.move(san, { sloppy: true });
+  if (!mv) return;
+  lastMove = { from: mv.from, to: mv.to };
+  boardLocked = true;
+  selected = null;
+  redraw();
+}
+
+(function setupBoardInput() {
+  const boardEl = document.getElementById('board');
+  const squareAt = (x, y) => {
+    const el = document.elementFromPoint(x, y);
+    return el && el.closest ? el.closest('.sq') : null;
+  };
+
+  boardEl.addEventListener('pointerdown', e => {
+    const sqEl = e.target.closest('.sq');
+    if (!sqEl || !game || boardLocked) return;
+    const square = sqEl.dataset.sq;
+
+    // Second tap on a highlighted square: make the move
+    if (selected && square !== selected && sqEl.classList.contains('target')) {
+      playBoardMove(selected, square);
+      return;
+    }
+    if (!canMoveFrom(square)) {
+      if (selected) { selected = null; redraw(); }
+      return;
+    }
+
+    e.preventDefault();
+    selectSquare(square);
+    const img = boardEl.querySelector(`[data-sq="${square}"] .piece`);
+    drag = { from: square, x: e.clientX, y: e.clientY, ghost: null, src: img ? img.src : '', size: img ? img.offsetWidth : 46 };
+    boardEl.setPointerCapture(e.pointerId);
+  });
+
+  boardEl.addEventListener('pointermove', e => {
+    if (!drag) return;
+    if (!drag.ghost) {
+      if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < 5) return;
+      const g = document.createElement('img');
+      g.src = drag.src;
+      g.className = 'drag-ghost';
+      g.style.width = g.style.height = drag.size + 'px';
+      document.body.appendChild(g);
+      drag.ghost = g;
+      const fromEl = boardEl.querySelector(`[data-sq="${drag.from}"]`);
+      if (fromEl) fromEl.classList.add('from');
+    }
+    drag.ghost.style.left = e.clientX + 'px';
+    drag.ghost.style.top = e.clientY + 'px';
+  });
+
+  const endDrag = e => {
+    if (!drag) return;
+    const d = drag;
+    drag = null;
+    if (!d.ghost) return; // it was a tap: keep the piece selected
+    d.ghost.remove();
+    const target = e.type === 'pointerup' ? squareAt(e.clientX, e.clientY) : null;
+    if (target && target.dataset.sq !== d.from) playBoardMove(d.from, target.dataset.sq);
+    else redraw();
+  };
+  boardEl.addEventListener('pointerup', endDrag);
+  boardEl.addEventListener('pointercancel', endDrag);
+})();
+
 function loadPuzzle() {
   const p = PUZZLES[cur];
   revealed = false;
@@ -1082,11 +1271,17 @@ function loadPuzzle() {
   document.getElementById('puzzle-title').textContent = p.title;
   showPuzzleQuestion();
   document.getElementById('answer').value = '';
-  document.getElementById('feedback').textContent = 'Enter your move above';
+  document.getElementById('feedback').textContent = 'Move a piece on the board';
   document.getElementById('feedback').className = 'feedback empty';
   document.getElementById('hint-note').textContent = '';
   document.getElementById('sc-num').textContent = `${cur + 1}/${PUZZLES.length}`;
 
+  selected = null;
+  lastMove = null;
+  boardLocked = false;
+  try { game = (typeof Chess === 'function') ? new Chess(p.fen) : null; } catch (e) { game = null; }
+  document.querySelector('.input-row').hidden = !!game;
+  if (!game) document.getElementById('feedback').textContent = 'Type your move above';
   renderBoard(p.fen);
 }
 
@@ -1097,10 +1292,12 @@ function normalize(s) {
 
 let wrongStreak = 0;
 
-function checkAnswer() {
+function checkAnswer(boardMove) {
   const p = PUZZLES[cur];
-  const val = document.getElementById('answer').value.trim();
-  if (!val) return;
+  const fromBoard = typeof boardMove === 'string';
+  const val = fromBoard ? boardMove : document.getElementById('answer').value.trim();
+  if (!val) return false;
+  if (!fromBoard && boardLocked && lastMove) return false; // already solved
 
   attempts++;
   document.getElementById('sc-attempts').textContent = attempts;
@@ -1115,6 +1312,8 @@ function checkAnswer() {
     fb.className = 'feedback correct';
     document.getElementById('hint-note').textContent = '';
     showCheckup(revealed || hintsUsed > 0 ? 'gaveUp' : (missCount > 0 ? 'afterMisses' : 'fast'), !revealed);
+    if (!fromBoard) showMoveOnBoard(p.solution[0]);
+    return true;
     if (!revealed) {
       solved++;
       document.getElementById('sc-solved').textContent = solved;
@@ -1125,6 +1324,7 @@ function checkAnswer() {
     showWrongFeedback(fb, val, secondsTaken);
     startMoveTimer(); // time the next try from now
   }
+  return false;
 }
 
 function showHint() {
@@ -1141,6 +1341,7 @@ function showSolution() {
   const fb = document.getElementById('feedback');
   fb.textContent = 'Solution: ' + p.solution.join(', ');
   fb.className = 'feedback hint';
+  if (!(boardLocked && lastMove)) showMoveOnBoard(p.solution[0]);
   showCheckup('gaveUp', false);
 }
 
@@ -1420,6 +1621,7 @@ function showWrongFeedback(fb, move, secondsTaken) {
   showPuzzleQuestion();
 })();
 
+document.getElementById('year').textContent = new Date().getFullYear();
 loadPuzzle();
 
 /* ============================================ */
