@@ -34,7 +34,7 @@
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
 
-  .page { max-width: 760px; margin: 0 auto; }
+  .page { max-width: 1080px; margin: 0 auto; }
 
   a { color: var(--accent); }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -71,7 +71,7 @@
     font-size: 13px;
     color: var(--muted);
     margin-top: 6px;
-    max-width: 52ch;
+    max-width: 70ch;
   }
 
   .back-btn {
@@ -179,7 +179,7 @@
     color: var(--strong);
   }
 
-  p { font-size: 13px; max-width: 62ch; }
+  p { font-size: 13px; max-width: 78ch; }
   p + p { margin-top: 10px; }
   strong { color: var(--strong); font-weight: 500; }
 
@@ -206,7 +206,7 @@
     font-size: 13px;
   }
 
-  ul.facts li { padding-left: 16px; position: relative; max-width: 60ch; }
+  ul.facts li { padding-left: 16px; position: relative; max-width: 76ch; }
   ul.facts li::before { content: "–"; position: absolute; left: 0; color: var(--accent); }
 
   .callout {
@@ -217,15 +217,14 @@
     border: 1px solid var(--info-line);
     color: var(--info);
     font-size: 12.5px;
-    max-width: 62ch;
   }
 
   .callout.mind { background: var(--good-bg); border-color: var(--good-line); color: var(--good); }
 
   /* ---------- Piece cards ---------- */
   .pieces {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 16px;
     margin-top: 16px;
   }
@@ -235,6 +234,15 @@
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 16px;
+    display: flex;
+  }
+
+  /* Inside a piece card: text on top, board underneath */
+  .piece-card .lesson {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 0;
+    width: 100%;
+    grid-template-rows: 1fr auto;
   }
 
   .piece-head {
@@ -322,6 +330,37 @@
 
   .pair { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
 
+  /* ---------- Quick facts ---------- */
+  .facts-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    min-width: 260px;
+  }
+
+  .facts-panel h3 { font-size: 16px; margin-bottom: 8px; }
+
+  .facts-panel dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 16px;
+    font-size: 12.5px;
+  }
+
+  .facts-panel dt { color: var(--muted); }
+  .facts-panel dd { color: var(--strong); }
+
+  .mini .coord {
+    position: absolute;
+    left: 3px;
+    bottom: 1px;
+    font-size: 9px;
+    line-height: 1;
+    color: rgba(20, 20, 20, 0.65);
+    pointer-events: none;
+  }
+
   /* ---------- Setup and notation ---------- */
   .notation-table {
     width: 100%;
@@ -400,7 +439,7 @@
       <p class="lede">Everything you need to start playing, one step at a time. Tap the dots on the little boards to try each piece's moves.</p>
     </div>
     <!-- LINK: back to the ChessMD puzzles. Replace href="#" with your puzzle page address. -->
-    <a class="back-btn" id="back-link" href="https://ach-dev19.github.io/ChessMD/">← Back to puzzles</a>
+    <a class="back-btn" id="back-link" href="#">← Back to puzzles</a>
   </header>
 
   <div class="packs" id="packs" role="group" aria-label="Color theme">
@@ -422,8 +461,26 @@
   <section id="goal">
     <div class="step">STEP 1</div>
     <h2>The goal of the game</h2>
-    <p>Chess is played by two players, <strong>White</strong> and <strong>Black</strong>. White always moves first, and then you take turns, one move each.</p>
-    <p>You win by <strong>checkmating</strong> the other king. That means the king is being attacked and has no way to escape. You never actually capture the king. The game ends the moment it's trapped.</p>
+    <div class="lesson">
+      <div>
+        <p>Chess is played by two players, <strong>White</strong> and <strong>Black</strong>. White always moves first, and then you take turns, one move each. You can't skip a turn.</p>
+        <p>You win by <strong>checkmating</strong> the other king. That means the king is being attacked and has no way to escape. You never actually capture the king. The game ends the moment it's trapped.</p>
+        <p>Along the way you'll capture each other's pieces. Having more pieces usually helps, but only checkmate wins the game. A player can also <strong>resign</strong> (give up), or the game can end in a <strong>draw</strong>, where nobody wins.</p>
+      </div>
+      <aside class="facts-panel" aria-label="Quick facts">
+        <h3>Quick facts</h3>
+        <dl>
+          <dt>Players</dt><dd>2 (White and Black)</dd>
+          <dt>Squares</dt><dd>64</dd>
+          <dt>Pieces each</dt><dd>16</dd>
+          <dt>Pawns</dt><dd>8</dd>
+          <dt>Rooks, knights, bishops</dt><dd>2 of each</dd>
+          <dt>Queen, king</dt><dd>1 of each</dd>
+          <dt>Moves first</dt><dd>White</dd>
+          <dt>To win</dt><dd>Checkmate</dd>
+        </dl>
+      </aside>
+    </div>
   </section>
 
   <!-- 2. Setup -->
@@ -656,6 +713,8 @@
   <section id="notation">
     <div class="step">STEP 7</div>
     <h2>Reading chess moves</h2>
+    <div class="lesson">
+      <div>
     <p>Each square has a name. The columns are letters <strong>a to h</strong>, and the rows are numbers <strong>1 to 8</strong>, starting from White's side. So the bottom-left square is <strong>a1</strong>. A move is written as the piece's letter plus the square it goes to.</p>
     <div class="table-wrap">
       <table class="notation-table">
@@ -671,6 +730,12 @@
           <tr><td>e8=Q</td><td>A pawn promotes to a queen on e8.</td></tr>
         </tbody>
       </table>
+    </div>
+      </div>
+      <div class="board-box">
+        <div class="mini" data-static="8/8/8/8/8/8/8/8" data-coords="1" role="img" aria-label="Every square labeled with its name, from a1 to h8"></div>
+        <div class="board-caption">Every square has a name, from a1 to h8</div>
+      </div>
     </div>
   </section>
 
@@ -802,6 +867,12 @@ function drawBoard(el, pieces, opts = {}) {
       d.className = 'sq ' + ((x + y) % 2 === 1 ? 'light' : 'dark');
       d.dataset.sq = name;
       if ((opts.hl || []).includes(name)) d.classList.add('hl');
+      if (opts.coords) {
+        const c = document.createElement('span');
+        c.className = 'coord';
+        c.textContent = name;
+        d.appendChild(c);
+      }
       if ((opts.danger || []).includes(name)) d.classList.add('danger');
       const p = pieces[name];
       if (p) {
@@ -898,7 +969,7 @@ document.querySelectorAll('.mini[data-demo]').forEach(el => {
 /* ---------- Example positions ---------- */
 document.querySelectorAll('.mini[data-static]').forEach(el => {
   const list = s => (s ? s.split(',') : []);
-  drawBoard(el, fenToPieces(el.dataset.static), { hl: list(el.dataset.hl), danger: list(el.dataset.danger) });
+  drawBoard(el, fenToPieces(el.dataset.static), { hl: list(el.dataset.hl), danger: list(el.dataset.danger), coords: !!el.dataset.coords });
 });
 
 document.querySelectorAll('img[data-piece]').forEach(img => { img.src = PIECE_IMG[img.dataset.piece]; });
