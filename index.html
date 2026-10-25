@@ -13,7 +13,7 @@
     --bad-bg:#3b1220; --bad:#ff8fa3; --bad-line:#6b2238;
     --info-bg:#10263f; --info:#7cc0ff; --info-line:#1f4a78;
     --good-bg:#0f2e22; --good:#5fd39a; --good-line:#1d5a40;
-    --sq: min(54px, calc((100vw - 56px) / 8));
+    --sq: min(62px, calc((100vw - 56px) / 8));
     color-scheme: dark;
   }
 
@@ -32,7 +32,7 @@
 
   #app {
     width: 100%;
-    max-width: 620px;
+    max-width: 1080px;
   }
 
   h1 {
@@ -241,11 +241,16 @@
     display: block;
   }
 
+  /* Board on the left, puzzle info on the right; stacked on narrow screens */
   .board-wrap {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.5rem 2.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .board-wrap { grid-template-columns: minmax(0, 1fr); }
   }
 
   .board-col { flex: 0 0 auto; }
@@ -332,9 +337,61 @@
   }
 
   .info-col {
-    flex: 1;
-    min-width: 210px;
+    min-width: 0;
   }
+
+  /* ---------- Puzzle list ---------- */
+  .puzzle-list-wrap { margin-top: 18px; }
+
+  .puzzle-list-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .puzzle-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 6px;
+  }
+
+  .puzzle-list button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-align: left;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .puzzle-list button:hover { color: var(--strong); border-color: var(--border-hover); }
+  .puzzle-list button.current { color: var(--strong); border-color: var(--accent); }
+
+  .puzzle-list .pl-num {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: var(--bubble);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .puzzle-list .done .pl-num { background: var(--good-bg); color: var(--good); }
+  .puzzle-list .pl-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .turn-label {
     font-size: 14px;
@@ -894,6 +951,11 @@
           <p id="cu-board"></p>
         </div>
       </section>
+
+      <div class="puzzle-list-wrap">
+        <div class="puzzle-list-label">ALL PUZZLES</div>
+        <ol class="puzzle-list" id="puzzle-list"></ol>
+      </div>
     </div>
   </div>
 
@@ -981,7 +1043,7 @@
     <div class="cmsg bot">Hi! I'm your chess coach. I can see the puzzle you're working on. Ask me things like "give me a nudge", "why doesn't Rd1 work?", or "explain what a fork is". I won't spoil the answer unless you ask. ♟</div>
   </div>
   <div class="chat-input-row">
-    <input id="chat-input" placeholder="Coming out soon..." autocomplete="off" spellcheck="false"/>
+    <input id="chat-input" placeholder="Ask the coach..." autocomplete="off" spellcheck="false"/>
     <button id="chat-send">Send</button>
   </div>
 </div>
@@ -1287,6 +1349,7 @@ const PIECE_NAMES = {
   k:'Black king', q:'Black queen', r:'Black rook', b:'Black bishop', n:'Black knight', p:'Black pawn'
 };
 
+const solvedSet = new Set();
 let missCount = 0, hintsUsed = 0, puzzleStart = Date.now(), reviewShown = false;
 let cur = 0, solved = 0, attempts = 0, revealed = false, hintIdx = 0;
 
@@ -1469,6 +1532,29 @@ function showMoveOnBoard(san) {
   boardEl.addEventListener('pointercancel', endDrag);
 })();
 
+function renderPuzzleList() {
+  const list = document.getElementById('puzzle-list');
+  list.innerHTML = '';
+  PUZZLES.forEach((p, i) => {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.id = 'pl-' + i;
+    if (i === cur) { b.classList.add('current'); b.setAttribute('aria-current', 'true'); }
+    if (solvedSet.has(i)) b.classList.add('done');
+    const num = document.createElement('span');
+    num.className = 'pl-num';
+    num.textContent = solvedSet.has(i) ? '✓' : String(i + 1);
+    const name = document.createElement('span');
+    name.className = 'pl-name';
+    name.textContent = p.title;
+    b.append(num, name);
+    b.addEventListener('click', () => { cur = i; loadPuzzle(); });
+    li.appendChild(b);
+    list.appendChild(li);
+  });
+}
+
 function loadPuzzle() {
   const p = PUZZLES[cur];
   revealed = false;
@@ -1496,6 +1582,7 @@ function loadPuzzle() {
   document.querySelector('.input-row').hidden = !!game;
   if (!game) document.getElementById('feedback').textContent = 'Type your move above';
   renderBoard(p.fen);
+  renderPuzzleList();
 }
 
 function normalize(s) {
@@ -1526,11 +1613,13 @@ function checkAnswer(boardMove) {
     document.getElementById('hint-note').textContent = '';
     showCheckup(revealed || hintsUsed > 0 ? 'gaveUp' : (missCount > 0 ? 'afterMisses' : 'fast'), !revealed);
     if (!fromBoard) showMoveOnBoard(p.solution[0]);
-    return true;
     if (!revealed) {
+      solvedSet.add(cur);
+      renderPuzzleList();
       solved++;
       document.getElementById('sc-solved').textContent = solved;
     }
+    return true;
   } else {
     wrongStreak++;
     missCount++;
