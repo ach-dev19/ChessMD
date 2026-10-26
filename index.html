@@ -5,7 +5,6 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* Default pack: Midnight. Other packs are applied from the THEME_PACKS list in the script. */
     --bg:#0f1724; --text:#e2e8f0; --accent:#e6b450; --accent-hover:#d9a53c; --on-accent:#0f1724;
     --muted:#8b9bb4; --strong:#f8fafc; --dim:#5b6b84; --border:#2a3a52; --border-hover:#4a6a94;
     --panel:#172133; --panel-2:#131c2b; --panel-3:#111a29; --bubble:#1f2b40; --line:#22304a;
@@ -54,7 +53,6 @@
 
   .header-text { min-width: 0; }
 
-  /* ---------- Hamburger menu ---------- */
   .menu-btn {
     flex: 0 0 auto;
     width: 40px;
@@ -241,7 +239,6 @@
     display: block;
   }
 
-  /* Board on the left, puzzle info on the right; stacked on narrow screens */
   .board-wrap {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -340,7 +337,6 @@
     min-width: 0;
   }
 
-  /* ---------- Puzzle list ---------- */
   .puzzle-list-wrap { margin-top: 18px; }
 
   .puzzle-list-label {
@@ -558,7 +554,6 @@
     color: var(--dim);
   }
 
-  /* ---------- AI Coach chat widget ---------- */
   #chat-launcher {
     position: fixed;
     bottom: calc(24px + env(safe-area-inset-bottom, 0px));
@@ -691,7 +686,6 @@
   #chat-send:hover { background: var(--accent-hover); }
   #chat-send:disabled { background: var(--border); color: var(--dim); cursor: default; }
 
-  /* ---------- Mood check-in ---------- */
   .mood-chip {
     font-family: 'DM Mono', monospace;
     font-size: 11px;
@@ -821,7 +815,6 @@
     .mood-options { grid-template-columns: repeat(3, 1fr); }
   }
 
-  /* ---------- Check-up results ---------- */
   .checkup {
     margin-top: 16px;
     padding: 16px;
@@ -918,7 +911,6 @@
     <div class="info-col">
       <div class="turn-label" id="turn-label"><strong id="puzzle-title">Checkmate in 1</strong> · <span id="puzzle-q">White to move.</span></div>
 
-      <!-- Typing box: only shown if the chess rules library can't load, so the puzzle still works -->
       <div class="input-row" hidden>
         <label for="answer" class="sr">Your move</label>
         <input id="answer" placeholder="e.g. Qxf7#, Rd8+, e8=Q" autocomplete="off" spellcheck="false"/>
@@ -972,9 +964,6 @@
   </footer>
 </div>
 
-<!-- ---------- Side menu ----------
-     To add your links: replace href="#" on each <a class="menu-link"> below
-     with your web address, e.g. href="https://example.com/how-to-play". -->
 <div class="menu-scrim" id="menu-scrim"></div>
 <nav class="side-menu" id="side-menu" aria-label="ChessMD menu" aria-hidden="true">
   <div class="side-menu-head">
@@ -983,45 +972,39 @@
   </div>
   <ul class="menu-list">
     <li>
-      <!-- LINK 1: How to Play Chess guide -->
       <a class="menu-link" href="https://ach-dev19.github.io/ChessMD/how-to-play" target="_blank" rel="noopener">
         <span class="menu-icon" aria-hidden="true">♔</span>
         <span><strong>How to Play Chess</strong><small>How each piece moves, check and checkmate, and the basic rules.</small></span>
       </a>
     </li>
     <li>
-      <!-- LINK 2: Tactics Glossary -->
       <a class="menu-link" href="#" target="_blank" rel="noopener">
         <span class="menu-icon" aria-hidden="true">♘</span>
         <span><strong>Tactics Glossary</strong><small>Forks, pins, skewers, discovered checks and back rank mates.</small></span>
       </a>
     </li>
     <li>
-      <!-- LINK 3: Calm Mind Tips -->
       <a class="menu-link" href="#" target="_blank" rel="noopener">
         <span class="menu-icon" aria-hidden="true">✿</span>
         <span><strong>Calm Mind Tips</strong><small>Breathing and focus tricks to use during a tournament game.</small></span>
       </a>
     </li>
     <li>
-      <!-- LINK 4: About ChessMD -->
       <a class="menu-link" href="#" target="_blank" rel="noopener">
         <span class="menu-icon" aria-hidden="true">♕</span>
         <span><strong>About ChessMD</strong><small>Why this app was made and who it's for.</small></span>
       </a>
     </li>
     <li>
-      <!-- LINK 5: Gallery -->
       <a class="menu-link" href="#" target="_blank" rel="noopener">
         <span class="menu-icon" aria-hidden="true">🖼️</span>
-        <span><strong>Gallery</strong><small>A collection of photos of the library chess club.</small></span>
+        <span><strong>Gallery</strong><small>A collection of photos of my journey as a chess coach.</small></span>
       </a>
     </li>
   </ul>
   <p class="menu-soon" id="menu-soon" aria-live="polite"></p>
 </nav>
 
-<!-- ---------- Mood check-in ---------- -->
 <div class="mood-overlay" id="mood-overlay" role="dialog" aria-modal="true" aria-labelledby="mood-title" hidden>
   <div class="mood-card">
     <h2 id="mood-title">How are you feeling right now?</h2>
@@ -1031,7 +1014,6 @@
   </div>
 </div>
 
-<!-- ---------- AI Coach chat widget ---------- -->
 <button id="chat-launcher" aria-label="Open AI coach">♞</button>
 
 <div id="chat-panel">
@@ -1040,10 +1022,10 @@
     <p>KNOWS THE PUZZLE ON YOUR BOARD · ASK FOR HELP</p>
   </div>
   <div id="chat-messages">
-    <div class="cmsg bot">Hi! I'm CoachMD. I can see the puzzle you're working on. Ask me things like "give me a nudge", "why doesn't Rd1 work?", or "explain what a fork is". I won't spoil the answer unless you ask. ♟</div>
+    <div class="cmsg bot">Hi! I'm your chess coach. I can see the puzzle you're working on. Ask me things like "give me a nudge", "why doesn't Rd1 work?", or "explain what a fork is". I won't spoil the answer unless you ask. ♟</div>
   </div>
   <div class="chat-input-row">
-    <input id="chat-input" placeholder="Coming soon..." autocomplete="off" spellcheck="false"/>
+    <input id="chat-input" placeholder="Ask the coach..." autocomplete="off" spellcheck="false"/>
     <button id="chat-send">Send</button>
   </div>
 </div>
@@ -1055,9 +1037,6 @@ const PIECES = {
   k:'♚', q:'♛', r:'♜', b:'♝', n:'♞', p:'♟'
 };
 
-// Each puzzle has its own mood questions (calm / nervous / frustrated),
-// tips for tempting wrong moves, and a message after 2 wrong tries.
-// Tips are checked against the typed move with +, #, x and = removed (so "Qxf7#" becomes "qf7").
 const PUZZLES = [
   {
     title: "Checkmate in 1",
@@ -1328,7 +1307,6 @@ const PUZZLES = [
   }
 ];
 
-// Piece images, built into the page so no separate folder is needed
 const PIECE_IMG = {
   "K": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiNmN2Y0ZWMiIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8cGF0aCBkPSJNNDYgNiBMNTQgNiBMNTQgMTIgTDYwIDEyIEw2MCAxOSBMNTQgMTkgTDU0IDI2IEw0NiAyNiBMNDYgMTkgTDQwIDE5IEw0MCAxMiBMNDYgMTIgWiIvPgogIDxwYXRoIGQ9Ik01MCAyNiBDNTggMjYgNjIgMzAgNjIgMzYgTDc2IDMyIEM4MiA0MCA3NiA1NCA3MCA1OCBMMzAgNTggQzI0IDU0IDE4IDQwIDI0IDMyIEwzOCAzNiBDMzggMzAgNDIgMjYgNTAgMjYgWiIvPgogIDxyZWN0IHg9IjI5LjAiIHk9IjU4IiB3aWR0aD0iNDIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNMzMgNjQgTDY3IDY0IEw3MCA4MCBMMzAgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iIzFiMWIxYiI+CiAgPGxpbmUgeDE9IjMyIiB5MT0iNzAiIHgyPSI2OCIgeTI9IjcwIi8+PGxpbmUgeDE9IjUwIiB5MT0iMzAiIHgyPSI1MCIgeTI9IjU2Ii8+CjwvZz4KPC9zdmc+Cg==",
   "Q": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiNmN2Y0ZWMiIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIwIiByPSI1Ii8+PGNpcmNsZSBjeD0iMzYiIGN5PSIxNCIgcj0iNSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMTEiIHI9IjUiLz48Y2lyY2xlIGN4PSI2NCIgY3k9IjE0IiByPSI1Ii8+PGNpcmNsZSBjeD0iNzgiIGN5PSIyMCIgcj0iNSIvPgogIDxwYXRoIGQ9Ik0yMiAyNCBMMzIgNDYgTDM2IDE5IEw0NCA0NCBMNTAgMTYgTDU2IDQ0IEw2NCAxOSBMNjggNDYgTDc4IDI0IEw3MiA1OCBMMjggNTggWiIvPgogIDxyZWN0IHg9IjI5LjAiIHk9IjU4IiB3aWR0aD0iNDIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNMzMgNjQgTDY3IDY0IEw3MCA4MCBMMzAgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iIzFiMWIxYiI+CiAgPGxpbmUgeDE9IjMyIiB5MT0iNzAiIHgyPSI2OCIgeTI9IjcwIi8+CjwvZz4KPC9zdmc+Cg==",
@@ -1365,10 +1343,10 @@ function parseFen(fen) {
   });
 }
 
-let game = null;          // chess.js position for the current puzzle (null if the library didn't load)
-let boardLocked = false;  // true after the puzzle is solved, or while a wrong move snaps back
-let selected = null;      // square the player tapped
-let lastMove = null;      // {from, to} to highlight
+let game = null;
+let boardLocked = false;
+let selected = null;
+let lastMove = null;
 let drag = null;
 
 function renderBoard(fen) {
@@ -1428,7 +1406,6 @@ function redraw() {
   renderBoard(game ? game.fen() : PUZZLES[cur].fen);
 }
 
-/* ---------- Moving pieces (drag, or tap then tap) ---------- */
 function canMoveFrom(square) {
   if (!game || boardLocked) return false;
   const piece = game.get(square);
@@ -1442,8 +1419,8 @@ function selectSquare(square) {
 
 function playBoardMove(from, to) {
   selected = null;
-  const mv = game.move({ from, to, promotion: 'q' }); // pawns promote to a queen
-  if (!mv) { redraw(); return; }                       // not a legal move: snap back
+  const mv = game.move({ from, to, promotion: 'q' });
+  if (!mv) { redraw(); return; }
   lastMove = { from, to };
   boardLocked = true;
   redraw();
@@ -1451,7 +1428,6 @@ function playBoardMove(from, to) {
   document.getElementById('answer').value = mv.san;
   const correct = checkAnswer(mv.san);
   if (!correct) {
-    // show the move for a moment, then put the piece back
     setTimeout(() => {
       game.undo();
       lastMove = null;
@@ -1461,7 +1437,6 @@ function playBoardMove(from, to) {
   }
 }
 
-// Show a typed or revealed move on the board
 function showMoveOnBoard(san) {
   if (!game) return;
   const mv = game.move(san, { sloppy: true });
@@ -1484,7 +1459,6 @@ function showMoveOnBoard(san) {
     if (!sqEl || !game || boardLocked) return;
     const square = sqEl.dataset.sq;
 
-    // Second tap on a highlighted square: make the move
     if (selected && square !== selected && sqEl.classList.contains('target')) {
       playBoardMove(selected, square);
       return;
@@ -1522,7 +1496,7 @@ function showMoveOnBoard(san) {
     if (!drag) return;
     const d = drag;
     drag = null;
-    if (!d.ghost) return; // it was a tap: keep the piece selected
+    if (!d.ghost) return;
     d.ghost.remove();
     const target = e.type === 'pointerup' ? squareAt(e.clientX, e.clientY) : null;
     if (target && target.dataset.sq !== d.from) playBoardMove(d.from, target.dataset.sq);
@@ -1586,7 +1560,6 @@ function loadPuzzle() {
 }
 
 function normalize(s) {
-  // "Qxf7#", "Qxf7" and "qf7" all count as the same move
   return s.replace(/[\s+#!?x=]/gi, '').replace(/0/g, 'o').toLowerCase();
 }
 
@@ -1597,7 +1570,7 @@ function checkAnswer(boardMove) {
   const fromBoard = typeof boardMove === 'string';
   const val = fromBoard ? boardMove : document.getElementById('answer').value.trim();
   if (!val) return false;
-  if (!fromBoard && boardLocked && lastMove) return false; // already solved
+  if (!fromBoard && boardLocked && lastMove) return false;
 
   attempts++;
   document.getElementById('sc-attempts').textContent = attempts;
@@ -1624,7 +1597,7 @@ function checkAnswer(boardMove) {
     wrongStreak++;
     missCount++;
     showWrongFeedback(fb, val, secondsTaken);
-    startMoveTimer(); // time the next try from now
+    startMoveTimer();
   }
   return false;
 }
@@ -1647,13 +1620,11 @@ function showSolution() {
   showCheckup('gaveUp', false);
 }
 
-/* ---------- Check-up results (after the puzzle) ---------- */
 function formatTime(ms) {
   const sec = Math.max(0, Math.round(ms / 1000));
   return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
 }
 
-// outcome: 'fast' (no misses, no hints), 'afterMisses', or 'gaveUp' (hint or solution used)
 function showCheckup(outcome, solvedIt) {
   if (reviewShown) return;
   reviewShown = true;
@@ -1665,7 +1636,6 @@ function showCheckup(outcome, solvedIt) {
   document.getElementById('cu-hints').textContent = hintsUsed;
   document.getElementById('cu-mind').textContent = mr[outcome] || '';
 
-  // Extra line if they started Nervous or Frustrated and still solved it
   const extra = document.getElementById('cu-mood');
   if (solvedIt && (mood === 'nervous' || mood === 'frustrated')) {
     extra.textContent = `You started out feeling ${mood}, and you still solved it. That's real mental strength.`;
@@ -1687,10 +1657,6 @@ document.getElementById('answer').addEventListener('keydown', e => {
   if (e.key === 'Enter') checkAnswer();
 });
 
-
-/* ============================================ */
-/* Color theme packs                            */
-/* ============================================ */
 const DARK_SEMANTIC = {
   'bad-bg':'#3b1220', bad:'#ff8fa3', 'bad-line':'#6b2238',
   'info-bg':'#10263f', info:'#7cc0ff', 'info-line':'#1f4a78',
@@ -1762,11 +1728,6 @@ function applyPack(id) {
   applyPack(THEME_PACKS[saved] ? saved : 'midnight');
 })();
 
-
-/* ============================================ */
-/* Mood check-in                                */
-/* ============================================ */
-// Asked at most once every 24 hours. The answer (or a skip) is kept only in this browser.
 const MOOD_KEY = 'chessmd-mood-v2';
 const MOOD_TTL = 24 * 60 * 60 * 1000;
 
@@ -1776,14 +1737,13 @@ const MOODS = {
   frustrated: { face: '😤', label: 'Frustrated', gentle: true }
 };
 
-let mood = null; // null = not answered or skipped (treated like Calm)
+let mood = null;
 let moveTimerStart = Date.now();
 
 function startMoveTimer() {
   moveTimerStart = Date.now();
 }
 
-/* ---------- a. Puzzle question changes with mood ---------- */
 function puzzleQuestion(p) {
   const custom = (p.moodPrompts || {})[mood || 'calm'];
   if (custom) return custom;
@@ -1822,7 +1782,7 @@ function openMood() {
 function closeMood() {
   document.getElementById('mood-overlay').hidden = true;
   showPuzzleQuestion();
-  startMoveTimer(); // don't count time spent on the mood question
+  startMoveTimer();
   if (missCount === 0 && !reviewShown) puzzleStart = Date.now();
 }
 
@@ -1840,7 +1800,7 @@ function pickMood(value) {
 }
 
 function skipMood() {
-  saveMood(null); // remember the skip so it doesn't pop up again for 24 hours
+  saveMood(null);
   closeMood();
 }
 
@@ -1864,11 +1824,9 @@ function showCalmMessage(fb, text) {
   fb.appendChild(wrap);
 }
 
-/* ---------- b. Tracking puzzle performance ---------- */
 function showWrongFeedback(fb, move, secondsTaken) {
   const p = PUZZLES[cur];
 
-  // After 2 wrong moves: pause and breathe
   if (wrongStreak >= 2) {
     showCalmMessage(fb, p.afterTwo || "Pause. Take a breath. Look at every check and capture, then try again.");
     return;
@@ -1876,13 +1834,11 @@ function showWrongFeedback(fb, move, secondsTaken) {
 
   fb.className = 'feedback wrong';
 
-  // Moved in under 3 seconds
   if (secondsTaken < 3) {
     fb.textContent = "That was fast! Did you check every capture first?";
     return;
   }
 
-  // A tempting wrong idea for this puzzle (like moving the queen away)
   const m = normalize(move);
   const tempt = (p.tempting || []).find(t => t.match.test(m));
   if (tempt) {
@@ -1923,9 +1879,6 @@ function showWrongFeedback(fb, move, secondsTaken) {
   showPuzzleQuestion();
 })();
 
-/* ============================================ */
-/* Side menu                                    */
-/* ============================================ */
 (function setupMenu() {
   const btn = document.getElementById('menu-btn');
   const menu = document.getElementById('side-menu');
@@ -1954,7 +1907,6 @@ function showWrongFeedback(fb, move, secondsTaken) {
     if (e.key === 'Escape' && document.body.classList.contains('menu-open')) close();
   });
 
-  // Links still set to "#" haven't been filled in yet
   menu.querySelectorAll('.menu-link').forEach(a => {
     a.addEventListener('click', e => {
       if (a.getAttribute('href') === '#' || !a.getAttribute('href')) {
@@ -1968,9 +1920,6 @@ function showWrongFeedback(fb, move, secondsTaken) {
 document.getElementById('year').textContent = new Date().getFullYear();
 loadPuzzle();
 
-/* ============================================ */
-/* AI Coach chatbot                             */
-/* ============================================ */
 const chatLauncher = document.getElementById('chat-launcher');
 const chatPanel = document.getElementById('chat-panel');
 const chatMessages = document.getElementById('chat-messages');
@@ -1982,11 +1931,9 @@ chatLauncher.addEventListener('click', () => {
   if (chatPanel.classList.contains('open')) chatInput.focus();
 });
 
-// The page keeps the conversation; each question sends it to Claude
 let chatHistory = [];
 let samplePromise = (window.claude && window.claude.use) ? window.claude.use("sample") : Promise.resolve(null);
 
-// Built fresh each message so the coach always knows the CURRENT puzzle
 function buildInstructions() {
   const p = PUZZLES[cur];
   return `You are a friendly chess coach inside a chess puzzle web app for kids and teens.
@@ -2037,7 +1984,6 @@ async function sendChat() {
 
   addChatBubble(text, 'user');
   chatHistory.push({ role: 'user', content: text });
-  // Keep only the most recent turns so long chats stay quick
   if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
   while (chatHistory.length && chatHistory[0].role !== 'user') chatHistory.shift();
 
