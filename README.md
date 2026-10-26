@@ -8,7 +8,7 @@ Kids often get nervous, rush, or give up after one mistake at chess tournaments.
 
 ## 🚀 Live Demo
 
-🎯 **[Launch ChessMD](https://ach-dev19.github.io/Chess-Puzzle-Generator)**
+🎯 **[Launch ChessMD](https://ach-dev19.github.io/ChessMD)**
 
 > **Note:** The puzzles, mood check-in, and feedback work anywhere. The AI Coach chat only works when the app is opened in Claude, because it uses Claude to answer. On other sites it shows a short message instead of replying.
 
