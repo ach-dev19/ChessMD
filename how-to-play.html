@@ -6,9 +6,7 @@
 <title>How to Play Chess · ChessMD</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  /* Layout: one reading column; each lesson pairs short text with a small board. */
   :root {
-    /* Default pack: Midnight. The page switches to the pack chosen in the ChessMD app. */
     --bg:#0f1724; --text:#e2e8f0; --accent:#e6b450; --accent-hover:#d9a53c; --on-accent:#0f1724;
     --muted:#8b9bb4; --strong:#f8fafc; --dim:#5b6b84; --border:#2a3a52; --border-hover:#4a6a94;
     --panel:#172133; --panel-2:#131c2b; --panel-3:#111a29; --bubble:#1f2b40; --line:#22304a;
@@ -39,7 +37,6 @@
   a { color: var(--accent); }
   a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  /* ---------- Header ---------- */
   .site-header {
     display: flex;
     flex-wrap: wrap;
@@ -88,7 +85,6 @@
 
   .back-btn:hover { background: var(--accent-hover); }
 
-  /* ---------- Theme picker (same as the ChessMD app) ---------- */
   .packs {
     display: flex;
     flex-wrap: wrap;
@@ -132,7 +128,6 @@
     box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
   }
 
-  /* ---------- Contents ---------- */
   .toc {
     display: flex;
     flex-wrap: wrap;
@@ -152,7 +147,6 @@
 
   .toc a:hover { color: var(--strong); border-color: var(--accent); }
 
-  /* ---------- Sections ---------- */
   section { margin-bottom: 3rem; scroll-margin-top: 1rem; }
 
   .step {
@@ -221,7 +215,6 @@
 
   .callout.mind { background: var(--good-bg); border-color: var(--good-line); color: var(--good); }
 
-  /* ---------- Piece cards ---------- */
   .pieces {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -237,7 +230,6 @@
     display: flex;
   }
 
-  /* Inside a piece card: text on top, board underneath */
   .piece-card .lesson {
     grid-template-columns: minmax(0, 1fr);
     margin-top: 0;
@@ -263,7 +255,6 @@
 
   .value b { color: var(--strong); font-weight: 500; font-size: 15px; font-variant-numeric: tabular-nums; }
 
-  /* ---------- Mini boards ---------- */
   .board-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 
   .mini {
@@ -330,7 +321,6 @@
 
   .pair { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
 
-  /* ---------- Quick facts ---------- */
   .facts-panel {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -361,7 +351,6 @@
     pointer-events: none;
   }
 
-  /* ---------- Setup and notation ---------- */
   .notation-table {
     width: 100%;
     border-collapse: collapse;
@@ -411,7 +400,6 @@
 
   .tips b { display: block; color: var(--strong); font-weight: 500; margin-bottom: 3px; }
 
-  /* ---------- Footer ---------- */
   .site-footer {
     margin-top: 3rem;
     padding-top: 1rem;
@@ -438,7 +426,6 @@
       <h1>How to Play Chess</h1>
       <p class="lede">Everything you need to start playing, one step at a time. Tap the dots on the little boards to try each piece's moves.</p>
     </div>
-    <!-- LINK: back to the ChessMD puzzles. Replace href="#" with your puzzle page address. -->
     <a class="back-btn" id="back-link" href="#">← Back to puzzles</a>
   </header>
 
@@ -457,7 +444,6 @@
     <a href="#tips">Beginner tips</a>
   </nav>
 
-  <!-- 1. Goal -->
   <section id="goal">
     <div class="step">STEP 1</div>
     <h2>The goal of the game</h2>
@@ -483,7 +469,6 @@
     </div>
   </section>
 
-  <!-- 2. Setup -->
   <section id="setup">
     <div class="step">STEP 2</div>
     <h2>Setting up the board</h2>
@@ -504,7 +489,6 @@
     </div>
   </section>
 
-  <!-- 3. Pieces -->
   <section id="pieces">
     <div class="step">STEP 3</div>
     <h2>How each piece moves</h2>
@@ -593,7 +577,6 @@
     <div class="callout">Try it: on the knight's board, the knight is surrounded by its own pawns, but it can still jump out. On the pawn's board, push the pawn up and look for the diagonal capture.</div>
   </section>
 
-  <!-- 4. Special moves -->
   <section id="special">
     <div class="step">STEP 4</div>
     <h2>Three special moves</h2>
@@ -655,7 +638,6 @@
     </div>
   </section>
 
-  <!-- 5. Check and checkmate -->
   <section id="check">
     <div class="step">STEP 5</div>
     <h2>Check and checkmate</h2>
@@ -686,7 +668,6 @@
     </div>
   </section>
 
-  <!-- 6. Draws -->
   <section id="draws">
     <div class="step">STEP 6</div>
     <h2>When the game is a draw</h2>
@@ -709,7 +690,6 @@
     </div>
   </section>
 
-  <!-- 7. Notation -->
   <section id="notation">
     <div class="step">STEP 7</div>
     <h2>Reading chess moves</h2>
@@ -739,7 +719,6 @@
     </div>
   </section>
 
-  <!-- 8. Tips -->
   <section id="tips">
     <div class="step">STEP 8</div>
     <h2>Beginner tips</h2>
@@ -761,7 +740,6 @@
 </div>
 
 <script>
-// Piece images (same set as the ChessMD app)
 const PIECE_IMG = {
   "K": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiNmN2Y0ZWMiIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8cGF0aCBkPSJNNDYgNiBMNTQgNiBMNTQgMTIgTDYwIDEyIEw2MCAxOSBMNTQgMTkgTDU0IDI2IEw0NiAyNiBMNDYgMTkgTDQwIDE5IEw0MCAxMiBMNDYgMTIgWiIvPgogIDxwYXRoIGQ9Ik01MCAyNiBDNTggMjYgNjIgMzAgNjIgMzYgTDc2IDMyIEM4MiA0MCA3NiA1NCA3MCA1OCBMMzAgNTggQzI0IDU0IDE4IDQwIDI0IDMyIEwzOCAzNiBDMzggMzAgNDIgMjYgNTAgMjYgWiIvPgogIDxyZWN0IHg9IjI5LjAiIHk9IjU4IiB3aWR0aD0iNDIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNMzMgNjQgTDY3IDY0IEw3MCA4MCBMMzAgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iIzFiMWIxYiI+CiAgPGxpbmUgeDE9IjMyIiB5MT0iNzAiIHgyPSI2OCIgeTI9IjcwIi8+PGxpbmUgeDE9IjUwIiB5MT0iMzAiIHgyPSI1MCIgeTI9IjU2Ii8+CjwvZz4KPC9zdmc+Cg==",
   "Q": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiNmN2Y0ZWMiIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8Y2lyY2xlIGN4PSIyMiIgY3k9IjIwIiByPSI1Ii8+PGNpcmNsZSBjeD0iMzYiIGN5PSIxNCIgcj0iNSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMTEiIHI9IjUiLz48Y2lyY2xlIGN4PSI2NCIgY3k9IjE0IiByPSI1Ii8+PGNpcmNsZSBjeD0iNzgiIGN5PSIyMCIgcj0iNSIvPgogIDxwYXRoIGQ9Ik0yMiAyNCBMMzIgNDYgTDM2IDE5IEw0NCA0NCBMNTAgMTYgTDU2IDQ0IEw2NCAxOSBMNjggNDYgTDc4IDI0IEw3MiA1OCBMMjggNTggWiIvPgogIDxyZWN0IHg9IjI5LjAiIHk9IjU4IiB3aWR0aD0iNDIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNMzMgNjQgTDY3IDY0IEw3MCA4MCBMMzAgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iIzFiMWIxYiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iIzFiMWIxYiI+CiAgPGxpbmUgeDE9IjMyIiB5MT0iNzAiIHgyPSI2OCIgeTI9IjcwIi8+CjwvZz4KPC9zdmc+Cg==",
@@ -777,7 +755,6 @@ const PIECE_IMG = {
   "p": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+CjxnIGZpbGw9IiMyMjI1MmIiIHN0cm9rZT0iIzBiMGMwZSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjMwIiByPSIxMiIvPgogIDxyZWN0IHg9IjM5LjAiIHk9IjQyIiB3aWR0aD0iMjIiIGhlaWdodD0iNiIgcng9IjIiLz4KICA8cGF0aCBkPSJNNDEgNDggTDU5IDQ4IEw2OCA4MCBMMzIgODAgWiIvPgogIDxyZWN0IHg9IjIyIiB5PSI4MCIgd2lkdGg9IjU2IiBoZWlnaHQ9IjEwIiByeD0iMyIvPgo8L2c+CjxnIHN0cm9rZT0iI2M5Y2NkMiIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0iI2M5Y2NkMiI+CiAgCjwvZz4KPC9zdmc+Cg=="
 };
 
-/* ---------- Match the color theme chosen in the ChessMD app ---------- */
 const DARK_SEMANTIC = {
   'bad-bg':'#3b1220', bad:'#ff8fa3', 'bad-line':'#6b2238',
   'info-bg':'#10263f', info:'#7cc0ff', 'info-line':'#1f4a78',
@@ -817,7 +794,6 @@ const THEME_PACKS = {
     'sq-light':'#f0d9b5', 'sq-dark':'#b58863', ...LIGHT_SEMANTIC } }
 };
 
-
 function applyPack(id) {
   const pack = THEME_PACKS[id] || THEME_PACKS.midnight;
   const root = document.documentElement;
@@ -826,7 +802,6 @@ function applyPack(id) {
   document.querySelectorAll('.pack-btn').forEach(b => {
     b.setAttribute('aria-pressed', b.dataset.pack === id ? 'true' : 'false');
   });
-  // Same saved setting as the ChessMD app, so both pages stay in sync
   try { localStorage.setItem('chessmd-pack', id); } catch (e) {}
 }
 
@@ -851,14 +826,12 @@ function applyPack(id) {
   applyPack(THEME_PACKS[saved] ? saved : 'midnight');
 })();
 
-/* ---------- Helpers ---------- */
 const FILES = 'abcdefgh';
 const toXY = sq => [FILES.indexOf(sq[0]), parseInt(sq[1], 10) - 1];
 const toSq = (x, y) => FILES[x] + (y + 1);
 const onBoard = (x, y) => x >= 0 && x < 8 && y >= 0 && y < 8;
 
 function drawBoard(el, pieces, opts = {}) {
-  // pieces: { e4: 'K', d7: 'p', ... }  (uppercase = white, lowercase = black)
   el.innerHTML = '';
   for (let y = 7; y >= 0; y--) {
     for (let x = 0; x < 8; x++) {
@@ -902,17 +875,16 @@ function fenToPieces(fen) {
   return pieces;
 }
 
-/* ---------- Move rules for the demo boards (white piece, simple positions) ---------- */
 function movesFor(type, from, pieces) {
   const [fx, fy] = toXY(from);
-  const out = {}; // square -> isCapture
+  const out = {};
   const isBlack = sq => pieces[sq] && pieces[sq] === pieces[sq].toLowerCase();
   const add = (x, y) => {
     if (!onBoard(x, y)) return false;
     const sq = toSq(x, y);
     if (!pieces[sq]) { out[sq] = false; return true; }
     if (isBlack(sq)) out[sq] = true;
-    return false; // blocked
+    return false;
   };
   const slide = dirs => dirs.forEach(([dx, dy]) => {
     let x = fx + dx, y = fy + dy;
@@ -940,7 +912,6 @@ function movesFor(type, from, pieces) {
   return out;
 }
 
-/* ---------- Interactive piece demos ---------- */
 document.querySelectorAll('.mini[data-demo]').forEach(el => {
   const type = el.dataset.demo;
   const list = s => (s ? s.split(',') : []);
@@ -959,14 +930,13 @@ document.querySelectorAll('.mini[data-demo]').forEach(el => {
     if (!d) return;
     delete state.pieces[state.at];
     state.at = d.dataset.sq;
-    state.pieces[state.at] = (type === 'P' && state.at[1] === '8') ? 'Q' : type; // promotion
+    state.pieces[state.at] = (type === 'P' && state.at[1] === '8') ? 'Q' : type;
     render();
   });
   el.parentElement.querySelector('.reset-btn').addEventListener('click', () => { state = reset(); render(); });
   render();
 });
 
-/* ---------- Example positions ---------- */
 document.querySelectorAll('.mini[data-static]').forEach(el => {
   const list = s => (s ? s.split(',') : []);
   drawBoard(el, fenToPieces(el.dataset.static), { hl: list(el.dataset.hl), danger: list(el.dataset.danger), coords: !!el.dataset.coords });
@@ -974,7 +944,6 @@ document.querySelectorAll('.mini[data-static]').forEach(el => {
 
 document.querySelectorAll('img[data-piece]').forEach(img => { img.src = PIECE_IMG[img.dataset.piece]; });
 
-/* ---------- Placeholder links ---------- */
 const back = document.getElementById('back-link');
 back.addEventListener('click', e => {
   if (back.getAttribute('href') === '#') { e.preventDefault(); back.textContent = 'Link coming soon'; }
